@@ -1,0 +1,13 @@
+what we need for this exercise?
+    - polymorphism
+    - a new syntaxe : "virtual"
+        -> the method to call depends on the actual object
+            not on the pointer type.
+        -> use just "virtual" in the base class declaration
+            and not required in other class override.(make virtual once)
+        -> if we use "new" to create object, we need to make the destructor virtual too,
+            for delete. Because delete looks at the pointer type, not the actual object type,
+            unless the destructor is virtual.
+
+    N.B : const Animal a; always come with function member like:
+            std::string getType() const;

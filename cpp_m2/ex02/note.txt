@@ -1,0 +1,24 @@
+what we need for the exercise?
+    N.B: - the parameter of the operators function is the right hand side.
+         - "this" will be the left hand side.
+         - what compiler do : a.operator+(b) -> a + b.
+         - inside the class, the left operand is always the one calling the function.
+         - thats why non member function have 2 param and member 1.
+
+    1- overload of operators: > , < , >= , <= , == , !=
+        -> all these operators return a bool (compare)
+    2- operators: + , - , * , /
+        -> return a new object with new value which is the result of the two.
+    3- increment/decrement: ++ , --
+        - pre: ++a.
+            -> modify the object before giving the result.
+            -> need to return a reference
+        - post: a++.
+            -> give the value of the object then modify it.
+    4- min max mumber function:
+        - we implement const and non const function
+        - because c++ distinguishes thats
+        - ex: without the cosnt function we cant do this:
+            const Fixed a(5);
+            const Fixed b(10);
+            Fixed::min(a, b);  (ERROR if only non-const version exists)

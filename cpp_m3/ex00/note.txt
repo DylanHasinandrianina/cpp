@@ -1,0 +1,16 @@
+what we need?
+    - attack member member function:
+        -> cause lose of <attack damage> hp to his target
+        -> cost 1 ep
+        -> so if no ep, cant attack
+        -> if hp == 0, cant do anything (died)
+    - take damage member function:
+        -> take <amount> point of damage
+        -> if hp == 0, cant do anything (died)
+    - be repaired member function:
+        -> gain <amount> hp
+        -> cost 1 ep
+        -> so if no ep, cant repaire
+        -> if hp == 0, cant do anything (died)
+
+

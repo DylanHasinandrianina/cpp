@@ -1,0 +1,10 @@
+NEW CONCEPT : inheritance
+    -> allow a class to reuse attributes and methods from another class
+    -> syntaxe : class ParentClass : public ChildClass{};
+    -> in order to make a private attributes accessible from derived class, we need to make them "protected".
+    -> when an derived object is created, the base class is constructed first, when destroyed, the direved class dies first
+    -> if there is a method with the same signature, the derived class method replaces the base's version
+
+    N.B: for constructors or operators, on a derived class (ScavTrap), 
+        we need to deal with the base class first (ClapTrap), 
+        since the derived is the base plus extra stuff.

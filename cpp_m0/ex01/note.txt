@@ -1,0 +1,32 @@
+1- what is the goal?
+    i need to create a phone book that let user add, search and display contacts
+2- what are the small parts?
+    i need to implement contact and the phone book, but also the user interface
+3- what do i need to store?
+    in contact, i need to store first name, last name, nickname, phone number and dark secret
+    in the phone book, i need to store all the contacts
+4- what action do i need?
+    contact action:
+        set(): store the 5 pieces of info
+        get(): return the info for display
+    phone book action:
+        addContact()
+        displayContacts()
+        showOneContact()
+5- what s the order of execution?
+    ask the user to enter something
+    if ADD, he must feel the contact attribute
+    if SEARCH, display the saved contact first then ask for the user index and last display it
+    if EXIT, exit the program
+    if other input, ignored
+
+function needed:
+    -getline
+    -.size()
+    -setw()
+    -.empty()
+    -.substr(pos, len)
+
+N.B:
+std::string getFirstName() const;
+---> it promise that the function will not change any member of the object.

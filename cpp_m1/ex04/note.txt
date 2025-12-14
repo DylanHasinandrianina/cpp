@@ -1,0 +1,36 @@
+1- the main goal
+    -a program that take tree parameters, a filename and two strings s1 and s2
+    -the program should remplace all the occurrence of s1 in the file with s2 and write the result in another file.
+2- what function to use?
+    - std::ifstream : open file for reading
+        --> we need ifstream to change the file into a stream so getline can use if after. (getline(stream, buf, delim)).
+    - std::getline (..., '\0') : read file content until the end
+        --> getline normaly reads until a newline, but if you add a the delimiter '\0' which is not in the file
+            it will read until the EOF. it is a common trick to read an entire file at once.
+    - std::ofstream : create output file
+        --> create a file if doesnt exist or clear it if else
+            after, we can write in it exactly like std::cout.
+    - std::string::find : find occurrence
+        --> return the index of the string enter as parameter, or std::string::npos if not found
+            can also start searching from a specific index (text.find("hello", 4)).
+    - std::string::substr : extract a part of a string
+    - + : build replaced string
+    - .is_open() : check for error
+    --------------------------------------------------------------
+    NB: std::ifstream and std::ofstream are classes, so std::ifstream file(file.txt)
+        ->file is just the object of the class that we can use later.
+    --------------------------------------------------------------
+3- the order of execution:
+    - check arguments error first
+        - if != 4 --> error
+        - if filename not readable --> error
+        - if s1 is empty --> error, cannot be empty
+    - open the file with ifstream
+    - put the content into a string with getline
+    - open the output file with ofstream
+    - the loop:
+        - find the next occurrence of s1
+        - write until there
+        - then write s2 instead
+        - continue with the index after s1
+        - until EOF

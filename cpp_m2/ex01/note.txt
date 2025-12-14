@@ -1,0 +1,25 @@
+what really a fixed point is?
+    - it is a number representation where we store everything (integer or float) as an integer
+    - but we agree that a fixed number of bits represent the fractional part (rule).
+
+what we need in this exercise?
+- A constructor that converts the int in its parameter to the corresponding fixed point.
+    -> 8 bits after the point (NOT digits).
+    -> for this we can proceed in two way:
+        - by multiplying by 256 : raw_value = real_value * 256.
+        - or by bit shifting : raw_value = real_value << 8.
+        N.B: bit shifting to the right multiply the number by 2 so:
+            1 << 1 = 2
+            1 << 2 = 4
+            1 << 8 = 256
+
+- A constructor that converts the float in its parameter to the corresponding fixed point.
+    -> same as what we do with integer but we just use roundf() to be more accurate.
+
+- toFloat() function that convert the fixed point value to a floating point value.
+    -> the inverse of what the constructor do.
+    -> real_value = raw_value / 256 (1 << 8).
+
+- toInt() function, fixed point to integer.
+
+- the '<<' operator because the compiler doesnt know how to print the Fixed object.

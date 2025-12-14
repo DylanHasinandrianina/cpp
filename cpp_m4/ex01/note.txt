@@ -1,0 +1,22 @@
+- what we need for this exercise?
+    - DEEP COPY VS SHALLOW COPY
+        -> shallow copy: - bad for pointer
+                         - ex : Dog a, Dog b = a; and if Dog contain Brain* b,
+                                a.brain and b.brain point to the same thing.
+                                both dog object share the same brain in memory.
+                         - problems : if one modify, the other change too,
+                                        when destroyed, both try to delete, so DOUBLE FREE
+                            
+        -> deep copy: copy the actual data, not just the pointer
+
+    - TRUE USE OF THE VIRTUAL DESTRUCTOR
+        -> making based class destructor virtual :
+            - call the derived class destructor
+    
+    - in polymortphisme, a derived class can be assigned to the based classe,
+        like Animal* a = new Dog()
+
+- just to test the deep copy:
+    - need a member function to get the private attribute "ideas" in the brain class.
+    - and in the dog or cat class we need to get the private attribute "brain" as well.
+    

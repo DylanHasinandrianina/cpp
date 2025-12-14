@@ -1,0 +1,21 @@
+CANONICAL FORM:
+    - default constructor : example();
+        -> create a brand new object in a valid state
+        -> initialize all members
+    - copy constructor : example(const example& other);
+        -> create a new object that is a clone of another
+        -> not assignment
+    - copy assignment operator : example& operator=(const example& other);
+        -> called when existing object is replaced by another
+        -> this object already exists, make it become equal to another
+    - destructor : ~example();
+        -> called when the object dies
+        -> clean up and release resources
+
+FIXED POINT NUMBER:
+    - we need to make a rule first
+        -> how many number after the point? (N)
+    - and then the number is stocked like:
+        -> stocked_value = real_value x 10^N
+    - the point is just for me and the log, the computer cant see it
+        -> for the log or the calcul, we need to divide by 10^N to find the real value
