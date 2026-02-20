@@ -1,0 +1,14 @@
+NEW CONCEPT : template <typename T>
+
+-> it let us use the same function for different type.
+-> it make the compiler generate a function for a corresponding type
+-> the code of the template must be in the header not in a source file
+
+example:
+    template <typename T>
+    T add(T a, T b) {return a + b;}
+-> when we do add(1, 2); the compiler sees : T = int
+-> so it generate : int add(int a, int b){return a + b;}
+-> when we do add(1.2, 2.4); the compiler sees : T = double
+-> so it generate : double add(double a, double b){return a + b;}
+

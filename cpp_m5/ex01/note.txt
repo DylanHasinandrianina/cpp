@@ -1,0 +1,25 @@
+what i need to correct:
+
+- Form grades : is sign or execute grade is out of range
+- bool sign : we dont need it in the constructor, it will be always unsigned at creation
+- beSigned : - should take reference as parameter to change the real object not a copy
+             - if the grade is lower than the sign grade, we throw exeption, not lower than 150
+- signForm : - should take reference as well to modify the real object
+             - should use try and catch, and what() for the reason
+             - beSigned throw exception so we cant use if/else if to handle that
+
+
+NOTE:
+
+    - in the header file form.hpp or bureacrat.hpp we dont include the other.
+    - why? -> there will be circular dependency since bureacrat need form and form need bureacrat.
+    - instead, we use forward declaration.
+    - what is that? -> we just declare the class like "class Form" in bureacrat.hpp for example
+        not the heavy header (Form.hpp).
+    - Forward declaration works because headers only need to know that the class exists, not what’s inside it.
+
+
+    - const int getSignGrade() const;
+        -> THIS SYNTAXE CREATE ERRORS ON COMPILATION.
+        -> why? -> because const on a return value is useless when the value is returned by copy.
+                -> -Werror take that useless const as an error.

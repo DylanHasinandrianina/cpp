@@ -1,0 +1,43 @@
+CLASS TEMPLATE :
+I-  -> not a real class but a blueprint to generate classes
+    -> explanation:
+
+        when we do:
+        template<typename T>
+        class Array{
+            T value;
+        }
+
+        it doesnt creat a class yet, its only when we write:
+        Array<int> a;
+
+        that the compiler generate:
+        class Array{
+            int value;
+        }
+
+    -> because of that, the compiler must see the full code to generate the type
+    -> so, since we cant implement the template class member function like for
+        normal classes (implementation in the .cpp file),
+    -> there is two way to do it.
+    -> first, by implementing all the function in .hpp file
+    -> or using a .tpp file to store all the implementation and leave the .hpp file
+        as a normal one.
+    
+II- -> normal class function implementation : Array::Array();
+    -> template class function implementation : Array<T>::Array();
+
+    
+III-we need to implement [] operator.
+    why?
+    -> because if we have : Array<int> arr(5);
+    -> we cant do arr._data[index] since _data is private.
+    -> so we need [] operator to do arr[index] (behave like a normal array);
+
+IV- the .tpp file must be after the class definition
+
+
+
+
+
+

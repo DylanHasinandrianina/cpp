@@ -1,0 +1,13 @@
+- Now, the base class Form need to be abstract.
+    rappel : a class is abstract when it have a pure virtual function (virtual void test() = 0)
+
+- i have 3 derived classes
+- each class have different required grade and different actions
+- each have target attribute
+
+- we have execute() new member function in the base class Form
+- and a function that execute the form's action in each class
+
+We use an abstract base class to define common rules for all forms, 
+and derived classes to implement specific actions, ensuring clean design, 
+polymorphism, and proper exception handling

@@ -1,0 +1,28 @@
+a new concept : runtime type identification (RTTI) in polymorphism
+RTTI = the ability for C++ to know the real derived type at runtime
+-> to enable the RTTI, a class must have at least one virtual function
+-> so here, Base* p = new A(), with RTTI, the object is actually A
+                                without RTTI, p is Base*, we lose information
+
+
+dynamic_cast<real_type_ptr*>(object)
+ex: Base* p = new A();
+A* a = dynamic_cast<A*>(p); -> OK
+B* b = dynamic_cast<B*>(p); -> not OK return NULL
+-> it means that is the object (p) find its real type, it is ok, if else it return NULL
+
+
+same using of dynamic_cast for reference but this time with exception.
+try cast to A&
+success? -> print A
+faliure? -> catch the exception (std::bad_cast)
+
+
+rappel:
+    polymorphism : You manipulate objects through base class types, but the real object is a derived type.
+
+
+THE PROGRAM STEP:
+1- generete return a random object, A, B or C.
+2- identify(pointer) identify the object by using its pointer
+3- identify(reference) identify the object by using its reference

@@ -1,0 +1,3 @@
+Basically, for this exercise, we have a data structure that have its adress memory,
+by serialize(), by using a pointer to the data, we have the raw value of the adress of the data
+by deserialize(), we do the inverse, by using the raw value, we will have the pointer

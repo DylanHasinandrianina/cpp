@@ -1,0 +1,50 @@
+- Basically, this exercise ask us to take a string and convert it to the coresponding char, int float, double representation
+- But first, we need to parse the string
+    - if it is a char :
+                        Length = 3
+                        First and last char = '
+                        Middle = printable character
+    - if it is a pseudo literals : float : nanf, +inff, -inff
+                                    double : nan, +inf, -inf
+    - if it is a int : only digit, - or +(one sign), with no dot
+    - if it is a float : only digit but with dot, - or +, end with f
+    - if it is a double : only digit but with dot, - or +, no f
+    - if not all this, conversion impossible
+- After, we convert the string to its real type
+- Then, we convert to the three other type
+    - to char :
+        nan or inf -> impossible -> std::isnan(x), std::isinf(x)
+        outside [0-127] -> impossible
+        non-printable -> non displayable -> std::isprint()
+        else print 'c'
+    - to int:
+        nan or inf -> impossible -> std::numeric_limits<int>::min()
+        overflow/underflow -> impossible
+    - to float:
+        always possible except extrem overflow
+        print with .0f in the end if needed
+        handle nanf, +inff, -inff
+    - to double:
+        same as float without f
+
+
+std::setprecision -> control the total number of digit
+    ex : double d = 42.3423434
+    std::cout << std::setprecision(2) << d << std::endl; -> 42
+    std::cout << std::setprecision(4) << d << std::endl; -> 42.34
+std::fixed + std::setprecision -> control the number of digit after the dot
+    ex : double d = 42.3423434
+    std::cout << std::fixed << std::setprecision(2) << d << std::endl; -> 42.32
+    std::cout << std::fixed << std::setprecision(4) << d << std::endl; -> 42.3423
+
+
+
+
+
+
+
+
+std::numeric_limits<int>::min()
+std::numeric_limits<int>::max()
+std::isnan(x)
+std::isinf(x)
