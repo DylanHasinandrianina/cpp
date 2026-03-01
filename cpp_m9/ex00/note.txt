@@ -1,0 +1,63 @@
+- we have a program that take one parameter, which will be a file that contain certain date and a value (number of bitcoin) that i want to evaluate at that time. 
+- the objectif is to output the result of the value multiplied by the exchange rate according to the date indicated in the database (.csv)
+    or an error message if there is a problem.
+
+step 1: lets load the database into a container first.
+    - we will use the container map<key, value>.
+    - why? because it sorted the date(keys), and we can assign a value to a date(key).
+    1 - open the file
+    2 - parse it line by line
+    3 - store it in the map<>
+
+step 2: open the input file
+    - parse the input file and use the map to calculate the value.
+    1 - parse the file line by line
+        skip header if there is one
+        if not really like "date | value" treat it like a normal data line
+
+    2 - validate a line
+        does it contain '|'?
+        if not, print error and continue
+        if so, split the line, left side date, right side value
+        validate date (cctype)
+            Format YYYY-MM-DD
+            Length = 10
+            Positions 4 and 7 are '-'
+            Others digits
+            Month range 1–12
+            Day range 1–31
+        validate value
+            Is numeric (int or float)
+            No letters
+            No symbols (except one .)
+            Convertable to number
+            Value ≥ 0
+            Value ≤ 1000
+            If:
+                negative → Error: not a positive number.
+                1000 → Error: too large a number.
+                invalid → Error: bad input => <line>
+
+
+    3 - find the corresponding rate in the map
+    Using DB map:
+        Try exact date match
+        If not found:
+        find closest lower date
+        NOT higher date
+        If no lower date exists:
+        error (date before DB range)
+
+        using of lower_bound():
+        -> it point to the exact key if it is there
+        -> if key_to_find is greater than the last key in the map
+            lower_bound point to .end().
+        -> if the key_to_find is lower than the first key in the map
+            lower_bound point to .begin()
+    4 - calculate
+    5 - print
+
+
+
+
+

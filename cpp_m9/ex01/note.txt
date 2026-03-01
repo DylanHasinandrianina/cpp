@@ -1,0 +1,42 @@
+- RPN : Reverse polish notation (notation polonaise inversee).
+    -> c'est une facon d'ecrire une expression mathematique sans parenthese, ou l'operateur vient apres ses operandes.
+    -> ex : 3 4 + 2 * qui veut dire (3 + 4) * 2.
+
+- pour se faire, on va utiliser un stack
+- on va parcourir l'argument, on push dans le stack si c'est un nombre. si c'est un operateur, 
+    on prends les deux elements de la stack en appliquant l'operateur.
+- mais d'abord on va gerer les cas d'erreurs:
+    -> nombre doit etre < 10 et positif
+    -> au mois deux nombre dans le stack pour un operateur.
+    -> autre operateur ou symbole que + - * /
+    -> division par 0
+    -> pas exactement un nombre a la fin
+
+- utils : std::stringstream
+    -> comme un std::cin mais au lieu de lire depuis le clavier il lis depuis une chaine.
+    -> ex : std::string s = "8 9 * 9 -"
+            std::stringstream ss(s);
+            std::string token
+
+            ss >> token -> lis le premier token qui est 8 et ainsi de suite
+
+LES ETAPES:
+
+1 - le programme recois un argument, si pas d'argument -> erreur
+2 - creer un container de type stack
+3 - utiliser stringstream pour lire sur une chaine et parcourir chaque token
+4 - la boucle principal (parcour des tokens)
+    4.1 - traitement logique:
+        4.1.1 - si token est un nombre :
+                - convertir en entier
+                - push dans la pile
+        4.1.2 - si un operateur :
+                - verifier que pile.size() >= 2, sinon erreur
+                - pop valeur 2 puis valeur 1
+                - NB : si operateur '/' et que v2 == 0 -> error
+                - appliquer l'operateur (v1 operateur v2)
+                - push le resultat dans la pile
+        4.1.2 - si autre -> erreur
+5 - fin de la lecture:
+    - validation final : pile.size() == 1
+    - sinon erreur

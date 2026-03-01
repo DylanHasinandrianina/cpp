@@ -1,0 +1,10 @@
+because we are implementing a std::stack that is iterable,
+the MutantStack class will inherite from std::stack
+so we can have std::stack 's functions plus the iterator that we will implement.
+
+std::stack is not a real container, it is a container adaptor.
+which means that it have a container in it, which is deque by default.
+std::stack have a protected member called c -> THE REAL CONTAINER
+-> we will use this real container to make stack iterable.
+
+Any dependent nested type in templates must be prefixed with typename
