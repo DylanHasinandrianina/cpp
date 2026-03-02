@@ -28,11 +28,11 @@ AForm& AForm::operator=(const AForm& copy){
 AForm::~AForm(){}
 
 const char* AForm::GradeTooHighException::what() const throw(){
-    return "Form grade too high.";
+    return "grade too high.";
 }
 
 const char* AForm::GradeTooLowException::what() const throw(){
-    return "Form grade too low.";
+    return "grade too low.";
 }
 
 const std::string& AForm::getName() const{

@@ -48,19 +48,13 @@ void vsort(std::string& arg){
     //handle odd number of argument, because we cant assign .second of the last pair
     int stranggler = -1;
     if (input.size() % 2 != 0){
+        stranggler = input.back();
         input.pop_back();
-        stranggler = input[input.size() - 1];
     }
 
     //group the elements into pairs
-    for (int i = 0; i < input.size(); i++){
-        
-        int j = 0;
-        if (i % 2 == 0)
-            pairs[j].first = input[i];
-        else 
-            pairs[j].second = input[i];
-        j++;
+    for (int i = 0; i + 1 < input.size(); i++){
+        pairs.push_back(std::make_pair(input[i], input[i + 1]))
     }
 
     //sort each pair

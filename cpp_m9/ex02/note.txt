@@ -8,7 +8,7 @@ MERGE-INSERT SORT: (ex : 3 5 9 7 4)
 1 - group the elements into pairs : (3, 5) (9, 7) (4)
 2 - sort each pair : (3, 5) (7, 9) (4)
 3 - separate into two groups : small: [3, 7, 4] big: [5, 9]
-4 - sort only the big : sorted big: [5, 9] lower_bound
+4 - sort only the big : sorted big: [5, 9] RECURSIVE
 5 - insert the small one by one :
     insert 3 -> [3, 5, 9]
     insert 7 -> [3, 5, 7, 9]
