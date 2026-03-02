@@ -1,10 +1,10 @@
 CC = c++
 CFLAGS = -Wall -Wextra -Werror -std=c++98
 RM = rm -f
-SRCS = main.cpp PmergeME.cpp
+SRCS = main.cpp PmergeMe.cpp
 OBJS_DIR = objs
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-NAME = PmergeME
+NAME = PmergeMe
 
 all: $(NAME)
 

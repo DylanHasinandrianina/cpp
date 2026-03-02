@@ -9,7 +9,7 @@
 #include <vector>
 #include <deque>
 
-int parser(std::string& arg);
-void vsort(std::string& arg);
+int parseToken(std::string& token);
+std::vector<int> vsort(std::vector<int>& input);
 
 #endif
