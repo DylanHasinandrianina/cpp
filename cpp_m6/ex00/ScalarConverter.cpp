@@ -93,21 +93,30 @@ static void printPseudo(std::string literal){
                 << "double: -inf\n";
 }
 
-static void printChar(char c){
-    std::cout << "char: " << c << std::endl
-                << "int: " << static_cast<int>(c) << std::endl;
+static void printChar(std::string literal){
+
+    char c = literal[0];
+    int i = static_cast<int>(c);
+    float f = static_cast<float>(c);
+    double d = static_cast<double>(c);
+
+    std::cout << "char: " << "'" << c << "'" << std::endl
+                << "int: " << i << std::endl;
     std::cout << std::fixed << std::setprecision(1);
-    std::cout << "float: " << static_cast<float>(c) << "f" << std::endl;
-    std::cout << "double: " << static_cast<double>(c) << std::endl;
+    std::cout << "float: " << f << "f" << std::endl;
+    std::cout << "double: " << d << std::endl;
 }
 
-static void printInt(long l){
+static void printInt(std::string literal){
+
+    long l = std::atol(literal.c_str());
+
     if (l < 0 || l > 127)
         std::cout << "char: impossible" << std::endl;
     else if (!std::isprint(l))
         std::cout << "char: non displayable" << std::endl;
     else
-        std::cout << "char: " << static_cast<char>(l) << std::endl;
+        std::cout << "char: " << "'" << static_cast<char>(l) << "'" << std::endl;
 
     if (l < std::numeric_limits<int>::min() || l > std::numeric_limits<int>::max())
         std::cout << "int: impossible" << std::endl;
@@ -119,14 +128,16 @@ static void printInt(long l){
     std::cout << "double: " << static_cast<double>(l) << std::endl;
 }
 
-static void printFloat(double d){
+static void printScalar(std::string literal){
+
+    double d = (std::atof(literal.c_str()));
 
     if (d < 0 || d > 127)
         std::cout << "char: impossible" << std::endl;
     else if (!std::isprint(static_cast<int>(d)))
         std::cout << "char: non displayable" << std::endl;
     else
-    std::cout << "char: " << static_cast<char>(d) << std::endl;
+    std::cout << "char: " << "'" << static_cast<char>(d) << "'" << std::endl;
 
     if (d < std::numeric_limits<int>::min() || d > std::numeric_limits<int>::max())
         std::cout << "int: impossible" << std::endl;
@@ -141,53 +152,29 @@ static void printFloat(double d){
     std::cout << "double: " << static_cast<double>(d) << std::endl;
 }
 
-static void printDouble(double d){
-
-    if (d < 0 || d > 127)
-        std::cout << "char: impossible" << std::endl;
-    else if (!std::isprint(static_cast<int>(d)))
-        std::cout << "char: non displayable" << std::endl;
-    else
-    std::cout << "char: " << static_cast<char>(d) << std::endl;
-
-    if (d < std::numeric_limits<int>::min() || d > std::numeric_limits<int>::max())
-        std::cout << "int: impossible" << std::endl;
-    else
-        std::cout << "int: " << static_cast<int>(d) << std::endl;
-
-    std::cout << std::fixed << std::setprecision(1);
-    if (d < -std::numeric_limits<float>::max() || d > std::numeric_limits<float>::max())
-        std::cout << "float: impossible" << std::endl;
-    else
-        std::cout << "float: " << static_cast<float>(d) << "f" << std::endl;
-
-    std::cout << "double: " << d << std::endl;
+static void printImpossible(){
+    std::cout << "char: impossible\n"
+                  << "int: impossible\n"
+                  << "float: impossible\n"
+                  << "double: impossible\n";
 }
 
 void ScalarConvert::convert(std::string literal){
-    if (ischar(literal)){
-        char c = literal[0];
-        printChar(c);
+    if (literal.empty()){
+        printImpossible();
+    }
+    else if (ischar(literal)){
+        printChar(literal);
     }
     else if (ispseudo(literal)){
         printPseudo(literal);
     }
     else if (isint(literal)){
-        long l = std::atol(literal.c_str());
-        printInt(l);
+        printInt(literal);
     }
-    else if (isfloat(literal)){
-        double f = (std::atof(literal.c_str()));
-        printFloat(f);
+    else if (isfloat(literal) || isdouble(literal)){
+        printScalar(literal);
     }
-    else if (isdouble(literal)){
-        double d = std::atof(literal.c_str());
-        printDouble(d);
-    }
-    else{
-        std::cout << "char: impossible\n"
-                  << "int: impossible\n"
-                  << "float: impossible\n"
-                  << "double: impossible\n";
-    }
+    else
+        printImpossible();
 }

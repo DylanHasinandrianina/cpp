@@ -48,3 +48,24 @@ std::numeric_limits<int>::min()
 std::numeric_limits<int>::max()
 std::isnan(x)
 std::isinf(x)
+
+
+
+
+./convert ""   
+char: non displayable
+int: 0
+float: 0.0f
+double: 0.0
+
+ex00 git:(main) ✗ ./convert 3.5e38f
+char: impossible
+int: impossible
+float: impossible
+double: impossible
+
+ ex00 git:(main) ✗ ./convert '\n'
+char: impossible
+int: impossible
+float: impossible
+double: impossible

@@ -56,7 +56,7 @@ int main()
         std::cout << d[i] << " ";
     std::cout << std::endl;
 
-    // d[0] = 5; // ❌ must not compile if const operator[] is correct
+    // d[0] = 5;
 
     std::cout << "\n===== Bounds checking =====" << std::endl;
     try {
@@ -66,7 +66,7 @@ int main()
         std::cout << "Exception caught: " << e.what() << std::endl;
     }
 
-    std::cout << "\n===== Different type =====" << std::endl;
+    std::cout << "\n===== String type test=====" << std::endl;
     Array<std::string> s(3);
     s[0] = "Hello";
     s[1] = "Template";
@@ -76,7 +76,15 @@ int main()
         std::cout << s[i] << " ";
     std::cout << std::endl;
 
-    std::cout << "\n===== End of tests =====" << std::endl;
+    std::cout << "\n===== Class type test =====" << std::endl;
+    Array<Test> arr(3);
+
+    arr[0] = Test(10);
+    arr[1] = Test(20);
+    arr[2] = Test(30);
+
+    for (unsigned int i = 0; i < arr.size(); i++)
+        std::cout << arr[i].get() << std::endl;
 
     return 0;
 }

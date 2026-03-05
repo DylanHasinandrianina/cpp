@@ -6,6 +6,7 @@
 Base::~Base(){}
 
 Base* generate(void){
+
     int r = rand() % 3;
 
     if (r == 0)
@@ -41,19 +42,22 @@ void identify(Base* p){
 
 void identify(Base& p){
     try{
-        dynamic_cast<A&>(p);
+        A& a = dynamic_cast<A&>(p);
+        (void)a;
         std::cout << "The actual type of the object referenced by p is : A\n";
         return;
     }
     catch(...){}
     try{
-        dynamic_cast<B&>(p);
+        B& b = dynamic_cast<B&>(p);
+        (void)b;
         std::cout << "The actual type of the object referenced by p is : B\n";
         return;
     }
     catch(...){}
     try{
-        dynamic_cast<C&>(p);
+        C& c = dynamic_cast<C&>(p);
+        (void)c;
         std::cout << "The actual type of the object referenced by p is : C\n";
         return;
     }

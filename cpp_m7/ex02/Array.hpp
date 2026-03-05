@@ -21,6 +21,18 @@ class Array{
         size_t size() const;
 };
 
+
+class Test{
+    public:
+        Test() : value(0) {}
+        Test(int v) : value(v) {}
+
+        int get() const { return value; }
+
+    private:
+        int value;
+};
+
 #include "Array.tpp"
 
 #endif

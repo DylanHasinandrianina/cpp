@@ -1,9 +1,10 @@
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -MP
 RM = rm -f
-SRCS = main.cpp iter.cpp
+SRCS = main.cpp
 OBJS_DIR = objs
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
+DEP = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.d))
 NAME = ex01
 
 all: $(NAME)
@@ -16,11 +17,13 @@ $(OBJS_DIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJS_DIR)
+	$(RM) -r $(OBJS_DIR) $(DEP)
 
 fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
+
+-include $(DEP)
 
 .PHONY: all clean fclean re

@@ -6,6 +6,7 @@ RTTI = the ability for C++ to know the real derived type at runtime
 
 
 dynamic_cast<real_type_ptr*>(object)
+-> dynamic_cast is for the conversion of a base class to its derived
 ex: Base* p = new A();
 A* a = dynamic_cast<A*>(p); -> OK
 B* b = dynamic_cast<B*>(p); -> not OK return NULL

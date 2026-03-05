@@ -17,6 +17,5 @@ class ScalarConvert{
         static void convert(std::string literal);
 };
 
-int parser(std::string literal);
 
 #endif

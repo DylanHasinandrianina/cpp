@@ -26,25 +26,25 @@ int parseToken(std::string& token){
     return 1;
 }
 
-std::vector<int> vsort(std::vector<int>& input){
+std::vector<int> fordVector(std::vector<int>& vInput){
 
     std::vector<std::pair<int, int> > pairs;
     std::vector<int> small;
     std::vector<int> big;
 
-    if (input.size() <= 1)
-        return input;
+    if (vInput.size() <= 1)
+        return vInput;
 
     //handle odd number of argument, because we cant assign .second of the last pair
     int straggler = -1;
-    if (input.size() % 2 != 0){
-        straggler = input.back();
-        input.pop_back();
+    if (vInput.size() % 2 != 0){
+        straggler = vInput.back();
+        vInput.pop_back();
     }
 
     //group the elements into pairs
-    for (size_t i = 0; i + 1 < input.size(); i += 2){
-        pairs.push_back(std::make_pair(input[i], input[i + 1]));
+    for (size_t i = 0; i + 1 < vInput.size(); i += 2){
+        pairs.push_back(std::make_pair(vInput[i], vInput[i + 1]));
     }
 
     //sort each pair
@@ -61,7 +61,7 @@ std::vector<int> vsort(std::vector<int>& input){
     }
 
     //sort big
-    big = vsort(big);
+    big = fordVector(big);
 
     //insert small
     for (size_t i = 0; i < small.size(); i++){
@@ -82,3 +82,58 @@ std::vector<int> vsort(std::vector<int>& input){
     return big;
 }
 
+std::deque<int> fordDeque(std::deque<int>& dInput){
+
+    std::deque<std::pair<int, int> > pairs;
+    std::deque<int> small;
+    std::deque<int> big;
+
+    if (dInput.size() <= 1)
+        return dInput;
+
+    //handle odd number of argument, because we cant assign .second of the last pair
+    int straggler = -1;
+    if (dInput.size() % 2 != 0){
+        straggler = dInput.back();
+        dInput.pop_back();
+    }
+
+    //group the elements into pairs
+    for (size_t i = 0; i + 1 < dInput.size(); i += 2){
+        pairs.push_back(std::make_pair(dInput[i], dInput[i + 1]));
+    }
+
+    //sort each pair
+    for (size_t i = 0; i < pairs.size(); i++){
+
+        if (pairs[i].first > pairs[i].second)
+            std::swap(pairs[i].first, pairs[i].second);
+    }
+
+    //separate into two groups
+    for (size_t i = 0; i < pairs.size(); i++){
+        small.push_back(pairs[i].first);
+        big.push_back(pairs[i].second);
+    }
+
+    //sort big
+    big = fordDeque(big);
+
+    //insert small
+    for (size_t i = 0; i < small.size(); i++){
+        std::deque<int>::iterator it;
+
+        it = std::lower_bound(big.begin(), big.end(), small[i]);
+        big.insert(it, small[i]);
+    }
+
+    //insert stranggler
+    if (straggler != -1){
+        std::deque<int>::iterator it;
+
+        it = std::lower_bound(big.begin(), big.end(), straggler);
+        big.insert(it, straggler);
+    }
+
+    return big;
+}
