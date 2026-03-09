@@ -22,7 +22,7 @@ class Span{
         int longestSpan();
         
         template <typename IT>
-        void addNumbers(IT begin, IT end){
+        void addRange(IT begin, IT end){
             for (IT it = begin; it != end; ++it)
                 addNumber(*it);
         }

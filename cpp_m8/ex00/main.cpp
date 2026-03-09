@@ -12,7 +12,6 @@ int main(){
     v.push_back(4);
     v.push_back(5);
 
-
     std::list<int> l;
     l.push_back(6);
     l.push_back(7);

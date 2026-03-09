@@ -31,7 +31,7 @@ int main()
         vec.push_back(8);
         vec.push_back(12);
 
-        sp.addNumbers(vec.begin(), vec.end());
+        sp.addRange(vec.begin(), vec.end());
 
         std::cout << "After adding vector range:" << std::endl;
         std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
@@ -41,7 +41,7 @@ int main()
         lst.push_back(20);
         lst.push_back(-5);
 
-        sp.addNumbers(lst.begin(), lst.end());
+        sp.addRange(lst.begin(), lst.end());
 
         std::cout << "After adding list range:" << std::endl;
         std::cout << "Shortest span: " << sp.shortestSpan() << std::endl;
@@ -67,7 +67,7 @@ int main()
         numbers.push_back(std::rand());
     }
 
-    bigSpan.addNumbers(numbers.begin(), numbers.end());
+    bigSpan.addRange(numbers.begin(), numbers.end());
 
     std::cout << "Added " << N << " random numbers to Span." << std::endl;
 

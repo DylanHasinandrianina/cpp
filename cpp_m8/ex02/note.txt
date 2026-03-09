@@ -8,3 +8,10 @@ std::stack have a protected member called c -> THE REAL CONTAINER
 -> we will use this real container to make stack iterable.
 
 Any dependent nested type in templates must be prefixed with typename
+
+typedef typename std::stack<T>::container_type::iterator iterator;
+-> typedef : c'est pour l'alias
+-> typename : sert à dire au compilateur que ce qui suit est un type dépendant d’un template.
+-> container_type = alias du type du conteneur interne
+    std::deque<T> : signifie la meme chose si le conteneur interne est un deque
+-> ::iterator : iterateur du conteneur interne

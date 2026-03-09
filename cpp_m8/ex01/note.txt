@@ -1,0 +1,3 @@
+std::sort(begin(), end()) : trie le conteneur
+std::min_element, std::max_element: retourne un iterator sur le min et le max du conteneur
+N.B : *std::min_element pour retourner la vrai valeur
