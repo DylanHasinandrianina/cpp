@@ -26,6 +26,20 @@ int parseToken(std::string& token){
     return 1;
 }
 
+std::vector<size_t> jacobsthal_indices(size_t n){
+    std::vector<size_t> jacs;
+    size_t j0 = 0;
+    size_t j1 = 1;
+    while (j1 <= n){
+        jacs.push_back(j1);
+        size_t next = j1 + 2 * j0;
+        j0 = j1;
+        j1 = next;
+    }
+    return jacs;
+
+}
+
 std::vector<int> fordVector(std::vector<int>& vInput){
 
     std::vector<std::pair<int, int> > pairs;

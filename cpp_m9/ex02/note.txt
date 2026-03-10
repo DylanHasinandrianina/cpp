@@ -10,9 +10,12 @@ MERGE-INSERT SORT: (ex : 3 5 9 7 4)
 3 - separate into two groups : small: [3, 7, 4] big: [5, 9]
 4 - sort only the big : sorted big: [5, 9] RECURSIVE
 5 - insert the small one by one :
-    insert 3 -> [3, 5, 9]
-    insert 7 -> [3, 5, 7, 9]
-    insert 4 -> [3, 4, 5, 7, 9]
+    - find the Jacobsthal number corresponding to the size of small
+    - insert the first element in small to big first
+    - insert a3 then a2
+    - insert a5 then a4
+    - insert a11 a10 a9 a8 a7 a6
+    - --\\--
 
 STEP:
 1- parse the argument to detect errors:
@@ -23,3 +26,42 @@ STEP:
 2 - if valid argument, we start the time, we built the two container
 3 - we implement the same merge-insert sor algorithm for the two container
 4 - we print the result with the time that take our two container to sort them
+
+pas de doublons
+
+Pend = a1, a2, a3, a4, a5
+
+Jacobsthal : 1, 3, 5
+
+Bloc 1 → 1       → a1              → inséré en premier
+Bloc 2 → 3       → a2, a3          → insérés a3 puis a2
+Bloc 3 → 5       → a4, a5          → insérés a5 puis a4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+jac = [1, 3, 5]
+
+order = []
+
+size = 5;
+
+
+
