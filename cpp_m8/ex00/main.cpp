@@ -2,6 +2,7 @@
 #include <vector>
 #include <list>
 #include <stack>
+#include <deque>
 
 int main(){
 
@@ -26,10 +27,16 @@ int main(){
     d.push_back(14);
     d.push_back(15);
 
-    int result = easyfind(d, 6);
-    if (result)
-        std::cout << "Found.\n";
-    else
-        std::cout << "Not found.\n";
+    try {
+        std::vector<int>::iterator it = easyfind(v, 1);
+        std::cout << "Found: " << *it << std::endl;
+
+        it = easyfind(v, 10);
+        std::cout << "Found: " << *it << std::endl;
+    }
+    catch (const NotFoundException& e) {
+        std::cout << e.what() << std::endl;
+    }
+
     return 0;
 }

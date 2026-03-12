@@ -3,7 +3,7 @@
 
 int main()
 {
-    std::cout << "=====MUTANTSTACK TEST=====\n";
+    std::cout << "=====SUBJECT TEST=====\n";
     MutantStack<int> mstack;
     mstack.push(5);
     mstack.push(17);
@@ -13,7 +13,6 @@ int main()
     mstack.push(3);
     mstack.push(5);
     mstack.push(737);
-    //[...]
     mstack.push(0);
     MutantStack<int>::iterator itLst = mstack.begin();
     MutantStack<int>::iterator iteLst = mstack.end();
@@ -24,7 +23,22 @@ int main()
         std::cout << *itLst << std::endl;
         ++itLst;
     }
+    std::stack<int> st(mstack);
 
+
+    std::cout << "\n=====COPY AND CONST TEST=====\n";
+    const MutantStack<int> cm(mstack);
+    for (MutantStack<int>::const_iterator it = cm.begin(); it != cm.end(); ++it)
+        std::cout << *it << std::endl;
+
+    std::cout << "\n=====REVERSE TEST=====\n";
+    MutantStack<int>::reverse_iterator rit = mstack.rbegin();
+    MutantStack<int>::reverse_iterator rite = mstack.rend();
+    while (rit != rite)
+    {
+        std::cout << *rit << std::endl;
+        ++rit;
+    }
 
     std::cout << "========LIST TEST=====\n";
     std::list<int> lst;
@@ -46,7 +60,6 @@ int main()
         std::cout << *it << std::endl;
         ++it;
     }
-    std::list<int> s(lst);
     return 0;
 }
 

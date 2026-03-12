@@ -2,15 +2,25 @@
 #define EASYFIND_HPP
 
 #include <iostream>
+#include <algorithm>
+#include <exception>
+
+class NotFoundException : public std::exception{
+    public:
+        virtual const char* what() const throw(){
+            return "Not found in the container";
+        } 
+};
 
 template <typename T>
-int easyfind(T& container, int value){
+typename T::iterator easyfind(T& container, int value){
     typename T::iterator it;
-    for (it = container.begin(); it != container.end(); it++){
-        if (*it == value)
-            return 1;
+    it = std::find(container.begin(), container.end(), value);
+    if (it != container.end()){
+        return it;
     }
-    return 0;
+    else
+        throw(NotFoundException());
 }
 
 #endif
