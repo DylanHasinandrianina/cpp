@@ -48,7 +48,7 @@ void BitcoinExchange::parseInputFile(const std::string& InputFile){
 
     std::ifstream file(InputFile.c_str());
     if (!file.is_open()){
-        std::cout << "Cannot open the input file.\n";
+        std::cout << "Error: could not open the file.\n";
         return;
     }
     
