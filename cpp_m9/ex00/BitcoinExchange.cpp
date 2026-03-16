@@ -1,42 +1,127 @@
 #include "BitcoinExchange.hpp"
 
-std::map<std::string, double> loadDataBase(std::string DataBaseFile){
+/* Canonical form*/
+BitcoinExchange::BitcoinExchange() {}
 
-    std::map<std::string, double> db;
+BitcoinExchange::BitcoinExchange(const BitcoinExchange& other) : db(other.db) {}
 
-    std::ifstream file (DataBaseFile.c_str());
-    if (!file.is_open()){
-        std::cout << "Cannot open the data base file.\n";
-        return db;
+BitcoinExchange& BitcoinExchange::operator=(const BitcoinExchange& other) {
+    if (this != &other) {
+        db = other.db;
+    }
+    return *this;
+}
+
+BitcoinExchange::~BitcoinExchange() {}
+
+/*load the data base file into a map container*/
+bool BitcoinExchange::loadDataBase(const std::string& filename) {
+    std::ifstream file(filename.c_str());
+    if (!file.is_open()) {
+        std::cout << "Error: could not open file.\n";
+        return false;
     }
 
     std::string line;
-    if (!std::getline (file, line))
-        return db;
+    if (!std::getline(file, line))
+        return false;
 
-    while (std::getline (file, line)){
-
+    while (std::getline(file, line)) {
         if (line.empty())
             continue;
 
         size_t pos = line.find(',');
         if (pos == std::string::npos)
             continue;
-        
+
         std::string date = line.substr(0, pos);
-        std::string rateStr = line.substr(pos + 1);
-
-        double rate = atof(rateStr.c_str());
-
-        /*if the key exists, update the value, if not create a new entry and set value*/
+        double rate = atof(line.substr(pos + 1).c_str());
         db[date] = rate;
     }
 
     file.close();
-    return db;
+    return true;
 }
 
-std::string trim(std::string& str){
+/*parse the inputfile that contain an amount(value) of btc in a corresponding date*/
+void BitcoinExchange::parseInputFile(const std::string& InputFile){
+
+    std::ifstream file(InputFile.c_str());
+    if (!file.is_open()){
+        std::cout << "Cannot open the input file.\n";
+        return;
+    }
+    
+    std::string line;
+    bool firstLine = true;
+    while (std::getline (file, line)){
+
+        if (line.empty())
+            continue;
+
+        std::string trimLine = trim(line);
+
+        if (firstLine){
+            if (trimLine == "date | value"){
+                firstLine = false;
+                continue;
+            }
+            firstLine = false;
+        }
+        else if (trimLine == "date | value"){
+            std::cout << "Error: bad input => " << trimLine << std::endl;
+            continue;
+        }
+        parseLine(trimLine);
+    }
+}
+
+/*validate the date and the amount (value) in the input file*/
+void BitcoinExchange::parseLine(const std::string& line){
+
+    size_t pipePos = line.find('|');
+    if (pipePos == std::string::npos){
+        std::cout << "Error: bad input => " << line << std::endl;
+        return ;
+    }
+
+    std::string d = line.substr(0, pipePos);
+    std::string v = line.substr(pipePos + 1);
+    std::string dateStr = trim(d);
+    std::string valueStr = trim(v);
+
+    //validate date
+    if (!parseDate(dateStr)){
+        std::cout << "Error: bad input => " << line << std::endl;
+        return ;
+    }
+    //validate value
+    double value;
+    int res = parseValue(valueStr, value);
+    if (res == 0){
+        std::cout << "Error: bad input => " << line << std::endl;
+        return ;
+    }
+    else if (res == -1){
+        std::cout << "Error: not a positive number.\n";
+        return ;
+    }
+    else if (res == -2){
+        std::cout << "Error: too large a number.\n";
+        return ;
+    }
+
+    double rate = findRate(dateStr);
+
+    if (rate == -1)
+        return;
+    
+    double result = value * rate;
+    std::cout << dateStr << " => " << value << " = " << result << std::endl;
+}
+
+
+std::string BitcoinExchange::trim(const std::string& str){
     size_t start = 0;
     size_t end = str.length();
 
@@ -47,7 +132,7 @@ std::string trim(std::string& str){
     return str.substr(start, end - start);
 }
 
-int parseDate(std::string date){
+int BitcoinExchange::parseDate(const std::string& date){
 
     if (date.length() != 10)
         return 0;
@@ -57,7 +142,6 @@ int parseDate(std::string date){
         if (!std::isdigit(date[i]) && date[i] != '-')
             return 0;
     }
-    //std::string year = date.substr(0, 4);
     std::string monthStr = date.substr(5, 2);
     std::string dayStr = date.substr(8, 2);
 
@@ -71,7 +155,7 @@ int parseDate(std::string date){
     return 1;
 }
 
-int parseValue(std::string valueStr, double &outValue){
+int BitcoinExchange::parseValue(const std::string& valueStr, double &outValue){
 
     if (valueStr.empty())
         return 0;
@@ -107,7 +191,8 @@ int parseValue(std::string valueStr, double &outValue){
     return 1;
 }
 
-double findRate(std::string date, std::map<std::string, double>& db){
+/*find the corresponding rate to a date in the data base file*/
+double BitcoinExchange::findRate(const std::string& date){
 
     if (db.empty()) {
         std::cout << "Error: data base is empty.\n";
@@ -127,80 +212,3 @@ double findRate(std::string date, std::map<std::string, double>& db){
 
     return it->second;
 }
-
-void parseLine(std::string line, std::map<std::string, double> db){
-
-    size_t pipePos = line.find('|');
-    if (pipePos == std::string::npos){
-        std::cout << "Error: bad input => " << line << std::endl;
-        return ;
-    }
-
-    std::string d = line.substr(0, pipePos);
-    std::string v = line.substr(pipePos + 1);
-    std::string dateStr = trim(d);
-    std::string valueStr = trim(v);
-
-    //validate date
-    if (!parseDate(dateStr)){
-        std::cout << "Error: bad input => " << line << std::endl;
-        return ;
-    }
-    //validate value
-    double value;
-    int res = parseValue(valueStr, value);
-    if (res == 0){
-        std::cout << "Error: bad input => " << line << std::endl;
-        return ;
-    }
-    else if (res == -1){
-        std::cout << "Error: not a positive number.\n";
-        return ;
-    }
-    else if (res == -2){
-        std::cout << "Error: too large a number.\n";
-        return ;
-    }
-
-    double rate = findRate(dateStr, db);
-
-    if (rate == -1)
-        return;
-    
-    double result = value * rate;
-    std::cout << dateStr << " => " << value << " = " << result << std::endl;
-}
-
-int parseInputFile(std::string InputFile, std::map<std::string, double> db){
-
-    std::ifstream file(InputFile.c_str());
-    if (!file.is_open()){
-        std::cout << "Cannot open the input file.\n";
-        return 0;
-    }
-    
-    std::string line;
-    bool firstLine = true;
-    while (std::getline (file, line)){
-
-        if (line.empty())
-            continue;
-
-        std::string trimLine = trim(line);
-
-        if (firstLine){
-            if (trimLine == "date | value"){
-                firstLine = false;
-                continue;
-            }
-            firstLine = false;
-        }
-        else if (trimLine == "date | value"){
-            std::cout << "Error: bad input => " << trimLine << std::endl;
-            continue;
-        }
-        parseLine(trimLine, db);
-    }
-    return 1;
-}
-
