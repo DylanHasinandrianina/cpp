@@ -4,15 +4,16 @@ int main(int ac, char **av){
 
     //check args
     if (ac < 2){
-        std::cerr << "Error\n";
+        std::cerr << "Usage: ./PmergeMe <numbers...>\n";
         return 1;
     }
+    PmergeMe pm;
 
     //parse tokens
     for (int i = 1; i < ac; i++){
         std::string token = av[i];
-        if (!parseToken(token)){
-            std::cerr << "Error\n";
+        if (!pm.addToken(token)){
+            std::cerr << "Error: invalid token '" << token << "'\n";
             return 1;
         }
     }
@@ -24,7 +25,7 @@ int main(int ac, char **av){
         std::string token = av[i];
         vInput.push_back(std::atoi(token.c_str()));
     }
-    std::vector<int> vSorted = fordVector(vInput);
+    std::vector<int> vSorted = pm.fordVector(vInput);
     clock_t vend = clock();
     double timeVectorSeconds = double(vend - vstart) / CLOCKS_PER_SEC;
     double timeVectorMicroseconds = timeVectorSeconds * 1000000;
@@ -36,7 +37,7 @@ int main(int ac, char **av){
         std::string token = av[i];
         dInput.push_back(std::atoi(token.c_str()));
     }
-    std::deque<int> dSorted = fordDeque(dInput);
+    std::deque<int> dSorted = pm.fordDeque(dInput);
     clock_t dend = clock();
     double timeDequeSeconds = double(dend - dstart) / CLOCKS_PER_SEC;
     double timeDequeMicroseconds = timeDequeSeconds * 1000000;

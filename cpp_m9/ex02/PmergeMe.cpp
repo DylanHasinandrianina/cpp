@@ -1,91 +1,123 @@
 #include "PmergeMe.hpp"
 
-int parseToken(std::string& token){
+PmergeMe::PmergeMe() {}
+
+PmergeMe::PmergeMe(const PmergeMe& other) : vec(other.vec), deq(other.deq) {}
+
+PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
+    if (this != &other) {
+        vec = other.vec;
+        deq = other.deq;
+    }
+    return *this;
+}
+
+PmergeMe::~PmergeMe() {}
+
+bool PmergeMe::addToken(const std::string& token){
 
     if (token.empty())
-        return (0);
+        return false;
     
     size_t i = 0;
     if (token[0] == '-' || token[0] == '+'){
         if (token.length() == 1)
-            return 0;
+            return false;
         else
             i++;
     }
 
     for (; i < token.length(); i++){
         if (!std::isdigit(token[i]))
-            return 0;
+            return false;
     }
 
     long nbr = std::atol(token.c_str());
     if (nbr < 0)
-            return 0;
+            return false;
     if (nbr > std::numeric_limits<int>::max())
-            return 0;
-    return 1;
+            return false;
+
+    return true;
 }
 
-std::vector<size_t> jacobsthal_indices(size_t n){
+std::vector<size_t> PmergeMe::jacobsthal_indices(size_t n){
     std::vector<size_t> jacs;
     size_t j0 = 0;
     size_t j1 = 1;
     while (j1 <= n){
         jacs.push_back(j1);
-        size_t next = j1 + 2 * j0;
+        size_t next = j1 + (2 * j0);
         j0 = j1;
         j1 = next;
     }
     return jacs;
-
 }
 
-std::vector<int> fordVector(std::vector<int>& vInput){
+std::vector<size_t> PmergeMe::build_insertion_order(size_t n){
 
-    std::vector<std::pair<int, int> > pairs;
-    std::vector<int> small;
-    std::vector<int> big;
+    std::vector<size_t> jac = jacobsthal_indices(n);
 
-    if (vInput.size() <= 1)
-        return vInput;
+    std::vector<size_t> order;
+    
+    size_t prev = 0;
 
-    //handle odd number of argument, because we cant assign .second of the last pair
+    for (size_t i = 0; i < jac.size(); i++){
+        size_t j = jac[i];
+        if (j > n)
+            j = n;
+        for (size_t k = j; k > prev; --k){
+            order.push_back(k - 1);
+        }
+        prev = j;
+    }
+
+    return order;
+}
+
+std::vector<int> PmergeMe::fordVector(std::vector<int>& input) {
+    if (input.size() <= 1)
+        return input;
+
+    std::vector<std::pair<int,int> > pairs;
+    std::vector<int> small, big;
     int straggler = -1;
-    if (vInput.size() % 2 != 0){
-        straggler = vInput.back();
-        vInput.pop_back();
+    if (input.size() % 2 != 0){
+        straggler = input.back();
+        input.pop_back();
     }
 
-    //group the elements into pairs
-    for (size_t i = 0; i + 1 < vInput.size(); i += 2){
-        pairs.push_back(std::make_pair(vInput[i], vInput[i + 1]));
-    }
+    // créer les paires
+    for (size_t i = 0; i + 1 < input.size(); i += 2)
+        pairs.push_back(std::make_pair(input[i], input[i+1]));
 
-    //sort each pair
-    for (size_t i = 0; i < pairs.size(); i++){
-
+    // trier chaque paire
+    for (size_t i = 0; i < pairs.size(); i++)
         if (pairs[i].first > pairs[i].second)
             std::swap(pairs[i].first, pairs[i].second);
-    }
 
-    //separate into two groups
-    for (size_t i = 0; i < pairs.size(); i++){
+    // séparer small / big
+    for (size_t i = 0; i < pairs.size(); i++) {
         small.push_back(pairs[i].first);
         big.push_back(pairs[i].second);
     }
 
-    //sort big
-    big = fordVector(big);
+    // tri récursif de big
+    if (!big.empty())
+        big = fordVector(big);
 
-    //insert small
-    for (size_t i = 0; i < small.size(); i++){
-        std::vector<int>::iterator it;
+    // ordre d’insertion Jacobsthal
+    std::vector<size_t> order = build_insertion_order(small.size());
 
-        it = std::lower_bound(big.begin(), big.end(), small[i]);
+    // insérer small dans big
+    for (size_t i = 0; i < small.size(); i++) {
+        //int idx = order[i];
+
+        std::vector<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[i]);
         big.insert(it, small[i]);
     }
 
-    //insert stranggler
+    // insérer le straggler
     if (straggler != -1){
         std::vector<int>::iterator it;
 
@@ -96,52 +128,42 @@ std::vector<int> fordVector(std::vector<int>& vInput){
     return big;
 }
 
-std::deque<int> fordDeque(std::deque<int>& dInput){
+std::deque<int> PmergeMe::fordDeque(std::deque<int>& input){
+    if (input.size() <= 1)
+        return input;
 
-    std::deque<std::pair<int, int> > pairs;
-    std::deque<int> small;
-    std::deque<int> big;
-
-    if (dInput.size() <= 1)
-        return dInput;
-
-    //handle odd number of argument, because we cant assign .second of the last pair
+    std::deque<std::pair<int,int> > pairs;
+    std::deque<int> small, big;
     int straggler = -1;
-    if (dInput.size() % 2 != 0){
-        straggler = dInput.back();
-        dInput.pop_back();
+    if (input.size() % 2 != 0){
+        straggler = input.back();
+        input.pop_back();
     }
 
-    //group the elements into pairs
-    for (size_t i = 0; i + 1 < dInput.size(); i += 2){
-        pairs.push_back(std::make_pair(dInput[i], dInput[i + 1]));
-    }
+    for (size_t i = 0; i + 1 < input.size(); i += 2)
+        pairs.push_back(std::make_pair(input[i], input[i+1]));
 
-    //sort each pair
-    for (size_t i = 0; i < pairs.size(); i++){
-
+    for (size_t i = 0; i < pairs.size(); i++)
         if (pairs[i].first > pairs[i].second)
             std::swap(pairs[i].first, pairs[i].second);
-    }
 
-    //separate into two groups
-    for (size_t i = 0; i < pairs.size(); i++){
+    for (size_t i = 0; i < pairs.size(); i++) {
         small.push_back(pairs[i].first);
         big.push_back(pairs[i].second);
     }
 
-    //sort big
     big = fordDeque(big);
 
-    //insert small
-    for (size_t i = 0; i < small.size(); i++){
-        std::deque<int>::iterator it;
+    std::vector<size_t> order = build_insertion_order(small.size());
 
-        it = std::lower_bound(big.begin(), big.end(), small[i]);
+    // insérer small dans big
+    for (size_t i = 0; i < small.size(); i++) {
+        //int idx = order[i];
+        std::deque<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[i]);
         big.insert(it, small[i]);
     }
 
-    //insert stranggler
+    // insérer le straggler
     if (straggler != -1){
         std::deque<int>::iterator it;
 
