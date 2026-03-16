@@ -1,9 +1,10 @@
 CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
+CFLAGS = -Wall -Wextra -Werror -std=c++98 -MMD -MP
 RM = rm -f
 SRCS = main.cpp RPN.cpp
 OBJS_DIR = objs
 OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
+DEP = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.d))
 NAME = RPN
 
 all: $(NAME)
@@ -16,36 +17,13 @@ $(OBJS_DIR)/%.o: %.cpp
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	$(RM) -r $(OBJS_DIR)
-
-fclean: clean
-	$(RM) $(NAME)
-CC = c++
-CFLAGS = -Wall -Wextra -Werror -std=c++98
-RM = rm -f
-SRCS = main.cpp BitcoinExchange.cpp
-OBJS_DIR = objs
-OBJS = $(addprefix $(OBJS_DIR)/, $(SRCS:.cpp=.o))
-NAME = btc
-
-all: $(NAME)
-
-$(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $@
-
-$(OBJS_DIR)/%.o: %.cpp
-	mkdir -p $(OBJS_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
-
-clean:
-	$(RM) -r $(OBJS_DIR)
+	$(RM) -r $(OBJS_DIR) $(DEP)
 
 fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
-re: fclean all
+-include $(DEP)
 
 .PHONY: all clean fclean re

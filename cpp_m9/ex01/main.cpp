@@ -7,9 +7,9 @@ int main(int ac, char **av){
         return 1;
     }
 
-    std::string param = av[1];
+    RPN rpn;
 
-    RPN(param);
+    rpn.compute(av[1]);
 
     return 0;
 }
