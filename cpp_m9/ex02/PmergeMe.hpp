@@ -23,10 +23,11 @@ public:
     bool addToken(const std::string& token);
     std::vector<int> fordVector(std::vector<int>& input);
     std::deque<int> fordDeque(std::deque<int>& input);
+    std::vector<size_t> build_insertion_order(size_t n);
+
 
 private:
     std::vector<size_t> jacobsthal_indices(size_t n);
-    std::vector<size_t> build_insertion_order(size_t n);
 };
 
 #endif

@@ -45,7 +45,7 @@ std::vector<size_t> PmergeMe::jacobsthal_indices(size_t n){
     std::vector<size_t> jacs;
     size_t j0 = 0;
     size_t j1 = 1;
-    while (j1 <= n){
+    while (j1 < n){
         jacs.push_back(j1);
         size_t next = j1 + (2 * j0);
         j0 = j1;
@@ -54,23 +54,26 @@ std::vector<size_t> PmergeMe::jacobsthal_indices(size_t n){
     return jacs;
 }
 
-std::vector<size_t> PmergeMe::build_insertion_order(size_t n){
+std::vector<size_t> PmergeMe::build_insertion_order(size_t n)
+{
+    std::vector<size_t> order;
 
     std::vector<size_t> jac = jacobsthal_indices(n);
 
-    std::vector<size_t> order;
-    
     size_t prev = 0;
 
-    for (size_t i = 0; i < jac.size(); i++){
+    for (size_t i = 0; i < jac.size(); i++)
+    {
         size_t j = jac[i];
-        if (j > n)
-            j = n;
-        for (size_t k = j; k > prev; --k){
+
+        for (size_t k = j; k > prev; --k)
             order.push_back(k - 1);
-        }
+
         prev = j;
     }
+
+    for (size_t k = n; k > prev; --k)
+        order.push_back(k - 1);
 
     return order;
 }
@@ -111,10 +114,10 @@ std::vector<int> PmergeMe::fordVector(std::vector<int>& input) {
 
     // insérer small dans big
     for (size_t i = 0; i < small.size(); i++) {
-        //int idx = order[i];
+        int idx = order[i];
 
-        std::vector<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[i]);
-        big.insert(it, small[i]);
+        std::vector<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[idx]);
+        big.insert(it, small[idx]);
     }
 
     // insérer le straggler
@@ -158,9 +161,9 @@ std::deque<int> PmergeMe::fordDeque(std::deque<int>& input){
 
     // insérer small dans big
     for (size_t i = 0; i < small.size(); i++) {
-        //int idx = order[i];
-        std::deque<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[i]);
-        big.insert(it, small[i]);
+        int idx = order[i];
+        std::deque<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[idx]);
+        big.insert(it, small[idx]);
     }
 
     // insérer le straggler
