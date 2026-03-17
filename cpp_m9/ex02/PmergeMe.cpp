@@ -14,7 +14,7 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
 
 PmergeMe::~PmergeMe() {}
 
-bool PmergeMe::addToken(const std::string& token){
+bool PmergeMe::parseToken(const std::string& token){
 
     if (token.empty())
         return false;
@@ -39,6 +39,38 @@ bool PmergeMe::addToken(const std::string& token){
             return false;
 
     return true;
+}
+
+std::vector<int>::iterator PmergeMe::binarySearchVector(std::vector<int>& v, int value) {
+    size_t left = 0;
+    size_t right = v.size();
+
+    while (left < right) {
+        size_t mid = left + (right - left) / 2;
+
+        if (v[mid] < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+
+    return v.begin() + left;
+}
+
+std::deque<int>::iterator PmergeMe::binarySearchDeque(std::deque<int>& d, int value) {
+    size_t left = 0;
+    size_t right = d.size();
+
+    while (left < right) {
+        size_t mid = left + (right - left) / 2;
+
+        if (d[mid] < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+
+    return d.begin() + left;
 }
 
 std::vector<size_t> PmergeMe::jacobsthal_indices(size_t n){
@@ -90,37 +122,37 @@ std::vector<int> PmergeMe::fordVector(std::vector<int>& input) {
         input.pop_back();
     }
 
-    // créer les paires
+    // create pairs
     for (size_t i = 0; i + 1 < input.size(); i += 2)
         pairs.push_back(std::make_pair(input[i], input[i+1]));
 
-    // trier chaque paire
+    // sort each pairs
     for (size_t i = 0; i < pairs.size(); i++)
         if (pairs[i].first > pairs[i].second)
             std::swap(pairs[i].first, pairs[i].second);
 
-    // séparer small / big
+    // divide pairs into small and big
     for (size_t i = 0; i < pairs.size(); i++) {
         small.push_back(pairs[i].first);
         big.push_back(pairs[i].second);
     }
 
-    // tri récursif de big
+    // sort big
     if (!big.empty())
         big = fordVector(big);
 
-    // ordre d’insertion Jacobsthal
+    // insertion order result of jacobsthal
     std::vector<size_t> order = build_insertion_order(small.size());
 
-    // insérer small dans big
+    // insert small in big using binary search and jacobsthal
     for (size_t i = 0; i < small.size(); i++) {
         int idx = order[i];
 
-        std::vector<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[idx]);
+        std::vector<int>::iterator it = binarySearchVector(big, small[idx]);
         big.insert(it, small[idx]);
     }
 
-    // insérer le straggler
+    // insert straggler
     if (straggler != -1){
         std::vector<int>::iterator it;
 
@@ -159,14 +191,12 @@ std::deque<int> PmergeMe::fordDeque(std::deque<int>& input){
 
     std::vector<size_t> order = build_insertion_order(small.size());
 
-    // insérer small dans big
     for (size_t i = 0; i < small.size(); i++) {
         int idx = order[i];
-        std::deque<int>::iterator it = std::lower_bound(big.begin(), big.end(), small[idx]);
+        std::deque<int>::iterator it = binarySearchDeque(big, small[idx]);
         big.insert(it, small[idx]);
     }
 
-    // insérer le straggler
     if (straggler != -1){
         std::deque<int>::iterator it;
 

@@ -20,14 +20,17 @@ public:
     ~PmergeMe();
 
     // main methods
-    bool addToken(const std::string& token);
+    bool parseToken(const std::string& token);
     std::vector<int> fordVector(std::vector<int>& input);
     std::deque<int> fordDeque(std::deque<int>& input);
-    std::vector<size_t> build_insertion_order(size_t n);
 
 
 private:
     std::vector<size_t> jacobsthal_indices(size_t n);
+    std::vector<size_t> build_insertion_order(size_t n);
+    std::vector<int>::iterator binarySearchVector(std::vector<int>& v, int value);
+    std::deque<int>::iterator binarySearchDeque(std::deque<int>& d, int value);
+
 };
 
 #endif

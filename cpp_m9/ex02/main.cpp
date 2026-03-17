@@ -12,7 +12,7 @@ int main(int ac, char **av){
     //parse tokens
     for (int i = 1; i < ac; i++){
         std::string token = av[i];
-        if (!pm.addToken(token)){
+        if (!pm.parseToken(token)){
             std::cerr << "Error: invalid token '" << token << "'\n";
             return 1;
         }
