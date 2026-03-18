@@ -138,8 +138,7 @@ std::vector<int> PmergeMe::fordVector(std::vector<int>& input) {
     }
 
     // sort big
-    if (!big.empty())
-        big = fordVector(big);
+    big = fordVector(big);
 
     // insertion order result of jacobsthal
     std::vector<size_t> order = build_insertion_order(small.size());
