@@ -18,7 +18,7 @@ BitcoinExchange::~BitcoinExchange() {}
 bool BitcoinExchange::loadDataBase(const std::string& filename) {
     std::ifstream file(filename.c_str());
     if (!file.is_open()) {
-        std::cout << "Error: could not open file.\n";
+        std::cout << "Error: could not open data base file.\n";
         return false;
     }
 
@@ -48,7 +48,7 @@ void BitcoinExchange::parseInputFile(const std::string& InputFile){
 
     std::ifstream file(InputFile.c_str());
     if (!file.is_open()){
-        std::cout << "Error: could not open the file.\n";
+        std::cout << "Error: could not open the input file.\n";
         return;
     }
     
